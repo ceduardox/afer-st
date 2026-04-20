@@ -1,0 +1,961 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Recibo | Afer Studio</title>
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="icon" href="favicon-32.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Allura&family=Outfit:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    >
+    <style>
+      :root {
+        --bg: #0b0a10;
+        --panel: rgba(17, 17, 24, 0.88);
+        --panel-soft: rgba(23, 23, 31, 0.72);
+        --border: rgba(255, 255, 255, 0.12);
+        --text: #f7f1ec;
+        --muted: rgba(247, 241, 236, 0.7);
+        --rose: #f1ab8e;
+        --ice: #8bdfff;
+        --ink: #1c1c23;
+        --paper: #ffffff;
+        --paper-text: #20232d;
+        --paper-muted: #667085;
+        --paper-line: #dde3ea;
+        --signature: #2d6cdf;
+        --radius-xl: 32px;
+        --radius-lg: 22px;
+        --radius-md: 16px;
+        --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Outfit", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top, rgba(139, 223, 255, 0.16), transparent 28%),
+          radial-gradient(circle at 85% 16%, rgba(241, 171, 142, 0.16), transparent 24%),
+          linear-gradient(180deg, #0c0b12 0%, #08080d 100%);
+      }
+
+      .page {
+        width: min(calc(100% - 32px), 1280px);
+        margin: 24px auto 40px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 14px 18px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: rgba(10, 10, 14, 0.62);
+        backdrop-filter: blur(16px);
+        box-shadow: var(--shadow);
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .brand img {
+        width: 46px;
+        height: 46px;
+        border-radius: 14px;
+      }
+
+      .brand-copy strong {
+        display: block;
+        font-size: 0.95rem;
+        letter-spacing: 0.14em;
+      }
+
+      .brand-copy span {
+        color: var(--muted);
+        font-size: 0.86rem;
+      }
+
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 46px;
+        padding: 0 18px;
+        border: 0;
+        border-radius: 999px;
+        font: inherit;
+        cursor: pointer;
+        transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+
+      .btn-primary {
+        color: #1a1418;
+        background: linear-gradient(135deg, #f8d7c3 0%, #f3a68a 48%, #8bdfff 100%);
+        box-shadow: 0 12px 28px rgba(243, 166, 138, 0.24);
+      }
+
+      .btn-secondary {
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(320px, 390px) minmax(0, 1fr);
+        gap: 24px;
+        margin-top: 24px;
+        align-items: start;
+      }
+
+      .panel {
+        padding: 22px;
+        border-radius: var(--radius-xl);
+        border: 1px solid var(--border);
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)),
+          var(--panel);
+        backdrop-filter: blur(18px);
+        box-shadow: var(--shadow);
+      }
+
+      .panel h1,
+      .panel h2 {
+        margin: 0 0 10px;
+      }
+
+      .panel h1 {
+        font-size: 2.1rem;
+        line-height: 1;
+      }
+
+      .panel p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.65;
+      }
+
+      .form-grid {
+        display: grid;
+        gap: 14px;
+        margin-top: 22px;
+      }
+
+      .field {
+        display: grid;
+        gap: 8px;
+      }
+
+      .field.row-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .field label,
+      .mini-label {
+        color: var(--text);
+        font-size: 0.88rem;
+        font-weight: 600;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--text);
+        font: inherit;
+        padding: 14px 16px;
+        outline: none;
+      }
+
+      textarea {
+        min-height: 88px;
+        resize: vertical;
+      }
+
+      input:focus,
+      select:focus,
+      textarea:focus {
+        border-color: rgba(139, 223, 255, 0.55);
+        box-shadow: 0 0 0 3px rgba(139, 223, 255, 0.12);
+      }
+
+      .hint {
+        display: inline-flex;
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 0.78rem;
+      }
+
+      .receipt-stage {
+        display: flex;
+        justify-content: center;
+      }
+
+      .receipt-sheet {
+        position: relative;
+        width: min(100%, 820px);
+        min-height: 1120px;
+        padding: 34px;
+        border-radius: 30px;
+        background:
+          radial-gradient(circle at top right, rgba(139, 223, 255, 0.14), transparent 28%),
+          radial-gradient(circle at top left, rgba(241, 171, 142, 0.14), transparent 24%),
+          var(--paper);
+        color: var(--paper-text);
+        box-shadow: 0 30px 90px rgba(0, 0, 0, 0.28);
+      }
+
+      .receipt-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        padding-bottom: 22px;
+        border-bottom: 1px solid var(--paper-line);
+      }
+
+      .receipt-brand {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .receipt-brand img {
+        width: 78px;
+        height: 78px;
+        border-radius: 22px;
+      }
+
+      .receipt-brand strong {
+        display: block;
+        font-size: 1.45rem;
+        letter-spacing: 0.06em;
+      }
+
+      .receipt-brand span {
+        display: block;
+        margin-top: 4px;
+        color: var(--paper-muted);
+      }
+
+      .receipt-badge {
+        padding: 16px 18px;
+        border-radius: 22px;
+        background: #f7f8fb;
+        text-align: right;
+      }
+
+      .receipt-badge span {
+        display: block;
+        color: var(--paper-muted);
+        font-size: 0.85rem;
+      }
+
+      .receipt-badge strong {
+        display: block;
+        margin-top: 6px;
+        font-size: 1.55rem;
+        letter-spacing: 0.06em;
+      }
+
+      .receipt-title {
+        margin: 28px 0 20px;
+      }
+
+      .receipt-title h2 {
+        font-size: 2.2rem;
+        line-height: 1;
+      }
+
+      .receipt-title p {
+        color: var(--paper-muted);
+      }
+
+      .receipt-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .receipt-item {
+        padding: 16px 18px;
+        border-radius: 22px;
+        background: #f7f8fb;
+      }
+
+      .receipt-item.full {
+        grid-column: 1 / -1;
+      }
+
+      .receipt-item span {
+        display: block;
+        color: var(--paper-muted);
+        font-size: 0.84rem;
+        margin-bottom: 8px;
+      }
+
+      .receipt-item strong {
+        display: block;
+        font-size: 1.04rem;
+        line-height: 1.45;
+      }
+
+      .receipt-body {
+        margin-top: 22px;
+        padding: 24px;
+        border-radius: 28px;
+        border: 1px solid var(--paper-line);
+      }
+
+      .receipt-body p {
+        margin: 0;
+        color: var(--paper-text);
+        line-height: 1.8;
+        font-size: 1rem;
+      }
+
+      .amount-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 220px;
+        gap: 14px;
+        margin-top: 20px;
+      }
+
+      .amount-card {
+        padding: 18px 20px;
+        border-radius: 24px;
+        background: linear-gradient(135deg, rgba(241, 171, 142, 0.14), rgba(139, 223, 255, 0.16));
+        border: 1px solid rgba(139, 146, 164, 0.18);
+      }
+
+      .amount-card span {
+        display: block;
+        color: var(--paper-muted);
+        font-size: 0.82rem;
+      }
+
+      .amount-card strong {
+        display: block;
+        margin-top: 8px;
+        font-size: 2rem;
+        line-height: 1;
+      }
+
+      .notes-box {
+        margin-top: 20px;
+        padding: 18px 20px;
+        border-radius: 24px;
+        background: #f7f8fb;
+      }
+
+      .notes-box span {
+        display: block;
+        color: var(--paper-muted);
+        font-size: 0.82rem;
+        margin-bottom: 8px;
+      }
+
+      .notes-box p {
+        margin: 0;
+        color: var(--paper-text);
+        line-height: 1.65;
+      }
+
+      .signature-area {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+        margin-top: 36px;
+        align-items: end;
+      }
+
+      .signature-card {
+        padding-top: 16px;
+      }
+
+      .signature-line {
+        height: 1px;
+        background: var(--paper-line);
+        margin-bottom: 10px;
+      }
+
+      .signature-label {
+        display: block;
+        color: var(--paper-muted);
+        font-size: 0.82rem;
+      }
+
+      .signature-name {
+        display: block;
+        margin-top: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+      }
+
+      .signature-script {
+        display: inline-block;
+        margin-bottom: 8px;
+        color: var(--signature);
+        font-family: "Allura", cursive;
+        font-size: 3.1rem;
+        line-height: 0.9;
+      }
+
+      .receipt-footer {
+        position: absolute;
+        inset: auto 34px 26px 34px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        color: var(--paper-muted);
+        font-size: 0.82rem;
+      }
+
+      @media (max-width: 1080px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+
+        .receipt-sheet {
+          min-height: auto;
+        }
+
+        .receipt-footer {
+          position: static;
+          margin-top: 28px;
+          padding-top: 18px;
+          border-top: 1px solid var(--paper-line);
+        }
+      }
+
+      @media (max-width: 720px) {
+        .page {
+          width: min(calc(100% - 18px), 1280px);
+          margin-top: 12px;
+        }
+
+        .topbar {
+          border-radius: 24px;
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .toolbar {
+          width: 100%;
+        }
+
+        .toolbar .btn {
+          flex: 1 1 100%;
+        }
+
+        .panel {
+          padding: 18px;
+        }
+
+        .field.row-2,
+        .receipt-grid,
+        .amount-row,
+        .signature-area {
+          grid-template-columns: 1fr;
+        }
+
+        .receipt-sheet {
+          padding: 22px;
+          border-radius: 24px;
+        }
+
+        .receipt-header {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .receipt-badge {
+          text-align: left;
+        }
+      }
+
+      @page {
+        size: A4;
+        margin: 8mm;
+      }
+
+      @media print {
+        body {
+          background: #fff;
+        }
+
+        .topbar,
+        .controls-panel {
+          display: none !important;
+        }
+
+        .page {
+          width: auto;
+          margin: 0;
+        }
+
+        .layout {
+          display: block;
+          margin: 0;
+        }
+
+        .receipt-stage {
+          display: block;
+        }
+
+        .receipt-sheet {
+          width: 100%;
+          min-height: auto;
+          box-shadow: none;
+          border-radius: 0;
+          padding: 12mm 11mm 10mm;
+          page-break-inside: avoid;
+        }
+
+        .receipt-header {
+          padding-bottom: 14px;
+        }
+
+        .receipt-brand img {
+          width: 60px;
+          height: 60px;
+          border-radius: 18px;
+        }
+
+        .receipt-brand strong {
+          font-size: 1.2rem;
+        }
+
+        .receipt-brand span {
+          font-size: 0.82rem;
+        }
+
+        .receipt-badge {
+          padding: 12px 14px;
+          border-radius: 18px;
+        }
+
+        .receipt-badge strong {
+          font-size: 1.25rem;
+        }
+
+        .receipt-title {
+          margin: 16px 0 12px;
+        }
+
+        .receipt-title h2 {
+          font-size: 1.72rem;
+        }
+
+        .receipt-title p {
+          font-size: 0.88rem;
+        }
+
+        .receipt-grid {
+          gap: 10px;
+        }
+
+        .receipt-item {
+          padding: 12px 14px;
+          border-radius: 18px;
+        }
+
+        .receipt-item span {
+          margin-bottom: 6px;
+          font-size: 0.74rem;
+        }
+
+        .receipt-item strong {
+          font-size: 0.96rem;
+          line-height: 1.35;
+        }
+
+        .receipt-body {
+          margin-top: 14px;
+          padding: 16px 18px;
+          border-radius: 20px;
+        }
+
+        .receipt-body p {
+          font-size: 0.92rem;
+          line-height: 1.55;
+        }
+
+        .amount-row {
+          margin-top: 14px;
+          gap: 10px;
+          grid-template-columns: minmax(0, 1fr) 170px;
+        }
+
+        .amount-card {
+          padding: 14px 16px;
+          border-radius: 18px;
+        }
+
+        .amount-card strong {
+          margin-top: 6px;
+          font-size: 1.52rem;
+        }
+
+        .notes-box {
+          margin-top: 14px;
+          padding: 14px 16px;
+          border-radius: 18px;
+        }
+
+        .notes-box span {
+          margin-bottom: 6px;
+        }
+
+        .notes-box p {
+          line-height: 1.45;
+          font-size: 0.9rem;
+        }
+
+        .signature-area {
+          gap: 12px;
+          margin-top: 20px;
+        }
+
+        .signature-card {
+          padding-top: 8px;
+        }
+
+        .signature-script {
+          margin-bottom: 4px;
+          font-size: 2.35rem;
+        }
+
+        .signature-name {
+          margin-top: 6px;
+          font-size: 0.92rem;
+        }
+
+        .signature-label {
+          font-size: 0.76rem;
+        }
+
+        .receipt-footer {
+          position: static;
+          margin-top: 14px;
+          padding-top: 10px;
+          border-top: 1px solid var(--paper-line);
+          font-size: 0.74rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header class="topbar">
+        <div class="brand">
+          <img src="logo-256.png" alt="Logo de Afer Studio">
+          <div class="brand-copy">
+            <strong>AFER STUDIO</strong>
+            <span>Recibo editable para cursos</span>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <button class="btn btn-primary" id="print-pdf" type="button">Descargar PDF</button>
+          <button class="btn btn-secondary" id="reset-form" type="button">Limpiar datos</button>
+        </div>
+      </header>
+
+      <div class="layout">
+        <section class="panel controls-panel">
+          <h1>Recibo</h1>
+          <p>
+            Rellena los datos del alumno o cliente, revisa la vista del recibo y luego usa
+            <strong>Descargar PDF</strong>.
+          </p>
+
+          <div class="form-grid">
+            <div class="field">
+              <label for="receipt-number">Numero de recibo</label>
+              <input id="receipt-number" name="receipt-number" type="text" value="088-001" inputmode="numeric">
+              <span class="hint">Siempre se mantendra con prefijo 088.</span>
+            </div>
+
+            <div class="field">
+              <label for="receipt-date">Fecha</label>
+              <input id="receipt-date" name="receipt-date" type="date">
+            </div>
+
+            <div class="field">
+              <label for="person-name">Nombre completo</label>
+              <input id="person-name" name="person-name" type="text" placeholder="Nombre del alumno o cliente">
+            </div>
+
+            <div class="field">
+              <label for="person-phone">Telefono</label>
+              <input id="person-phone" name="person-phone" type="tel" placeholder="Numero de contacto">
+            </div>
+
+            <div class="field">
+              <label for="course-type">Categoria</label>
+              <select id="course-type" name="course-type">
+                <option value="Curso de Micropigmentacion Intensivo">Curso de Micropigmentacion Intensivo</option>
+                <option value="Micropigmentacion Labial">Micropigmentacion Labial</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="amount-paid">Monto pagado</label>
+              <input id="amount-paid" name="amount-paid" type="text" value="Bs. 0" placeholder="Bs. 0">
+            </div>
+
+            <div class="field">
+              <label for="payment-method">Forma de pago</label>
+              <select id="payment-method" name="payment-method">
+                <option value="Efectivo">Efectivo</option>
+                <option value="Transferencia">Transferencia</option>
+                <option value="QR">QR</option>
+                <option value="Mixto">Mixto</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="received-by">Recibido por (opcional)</label>
+              <input id="received-by" name="received-by" type="text" placeholder="Nombre de la especialista">
+              <span class="hint">Si lo dejas vacio, aparecera Afer Studio.</span>
+            </div>
+
+            <div class="field">
+              <label for="notes">Observaciones (opcional)</label>
+              <textarea id="notes" name="notes" placeholder="Detalle adicional del pago o del curso"></textarea>
+            </div>
+          </div>
+        </section>
+
+        <section class="receipt-stage">
+          <article class="receipt-sheet" id="receipt-preview">
+            <header class="receipt-header">
+              <div class="receipt-brand">
+                <img src="logo-256.png" alt="Logo Afer Studio">
+                <div>
+                  <strong>AFER STUDIO</strong>
+                  <span>Lip Blush · Lashes · Beauty</span>
+                </div>
+              </div>
+
+              <div class="receipt-badge">
+                <span>Recibo N°</span>
+                <strong id="preview-number">088-001</strong>
+              </div>
+            </header>
+
+            <div class="receipt-title">
+              <h2>Recibo de pago</h2>
+              <p>Constancia de pago recibido por Afer Studio.</p>
+            </div>
+
+            <div class="receipt-grid">
+              <div class="receipt-item">
+                <span>Fecha</span>
+                <strong id="preview-date">--/--/----</strong>
+              </div>
+              <div class="receipt-item">
+                <span>Telefono</span>
+                <strong id="preview-phone">-</strong>
+              </div>
+              <div class="receipt-item full">
+                <span>Nombre</span>
+                <strong id="preview-name">Nombre del alumno o cliente</strong>
+              </div>
+              <div class="receipt-item full">
+                <span>Categoria</span>
+                <strong id="preview-course">Curso de Micropigmentacion Intensivo</strong>
+              </div>
+            </div>
+
+            <div class="receipt-body">
+              <p id="preview-text">
+                Afer Studio recibe de la persona indicada el pago correspondiente al curso o servicio seleccionado.
+              </p>
+
+              <div class="amount-row">
+                <div class="amount-card">
+                  <span>Monto recibido</span>
+                  <strong id="preview-amount">Bs. 0</strong>
+                </div>
+                <div class="amount-card">
+                  <span>Forma de pago</span>
+                  <strong id="preview-method">Efectivo</strong>
+                </div>
+              </div>
+
+              <div class="notes-box">
+                <span>Observaciones</span>
+                <p id="preview-notes">Sin observaciones adicionales.</p>
+              </div>
+            </div>
+
+            <div class="signature-area">
+              <div class="signature-card">
+                <div class="signature-line"></div>
+                <span class="signature-label">Firma del cliente</span>
+              </div>
+
+              <div class="signature-card">
+                <span class="signature-script" id="preview-signature">Afer Studio</span>
+                <div class="signature-line"></div>
+                <span class="signature-label">Recibido por</span>
+                <span class="signature-name" id="preview-received-by">Afer Studio</span>
+              </div>
+            </div>
+
+            <footer class="receipt-footer">
+              <span>Documento interno de Afer Studio</span>
+              <span id="preview-footer-date">Emitido hoy</span>
+            </footer>
+          </article>
+        </section>
+      </div>
+    </div>
+
+    <script>
+      const fields = {
+        number: document.querySelector("#receipt-number"),
+        date: document.querySelector("#receipt-date"),
+        name: document.querySelector("#person-name"),
+        phone: document.querySelector("#person-phone"),
+        course: document.querySelector("#course-type"),
+        amount: document.querySelector("#amount-paid"),
+        method: document.querySelector("#payment-method"),
+        receivedBy: document.querySelector("#received-by"),
+        notes: document.querySelector("#notes"),
+      };
+
+      const preview = {
+        number: document.querySelector("#preview-number"),
+        date: document.querySelector("#preview-date"),
+        name: document.querySelector("#preview-name"),
+        phone: document.querySelector("#preview-phone"),
+        course: document.querySelector("#preview-course"),
+        amount: document.querySelector("#preview-amount"),
+        method: document.querySelector("#preview-method"),
+        receivedBy: document.querySelector("#preview-received-by"),
+        signature: document.querySelector("#preview-signature"),
+        notes: document.querySelector("#preview-notes"),
+        text: document.querySelector("#preview-text"),
+        footerDate: document.querySelector("#preview-footer-date"),
+      };
+
+      const printButton = document.querySelector("#print-pdf");
+      const resetButton = document.querySelector("#reset-form");
+
+      const today = new Date();
+      const isoToday = new Date(today.getTime() - today.getTimezoneOffset() * 60000)
+        .toISOString()
+        .slice(0, 10);
+
+      fields.date.value = isoToday;
+
+      function ensureReceiptPrefix(value) {
+        const cleaned = String(value || "")
+          .replace(/[^\d]/g, "")
+          .replace(/^088/, "");
+
+        const suffix = cleaned || "001";
+        return `088-${suffix}`;
+      }
+
+      function formatDate(value) {
+        if (!value) return "--/--/----";
+        const [year, month, day] = value.split("-");
+        return `${day}/${month}/${year}`;
+      }
+
+      function normalizeAmount(value) {
+        const trimmed = value.trim();
+        if (!trimmed) return "Bs. 0";
+        if (/^bs\.?/i.test(trimmed)) return trimmed.replace(/^bs\.?/i, "Bs.");
+        return `Bs. ${trimmed}`;
+      }
+
+      function updateReceipt() {
+        const receiptNumber = ensureReceiptPrefix(fields.number.value);
+        fields.number.value = receiptNumber;
+
+        const name = fields.name.value.trim() || "Nombre del alumno o cliente";
+        const phone = fields.phone.value.trim() || "-";
+        const course = fields.course.value;
+        const amount = normalizeAmount(fields.amount.value);
+        const method = fields.method.value;
+        const receivedBy = fields.receivedBy.value.trim() || "Afer Studio";
+        const notes = fields.notes.value.trim() || "Sin observaciones adicionales.";
+        const formattedDate = formatDate(fields.date.value);
+
+        preview.number.textContent = receiptNumber;
+        preview.date.textContent = formattedDate;
+        preview.name.textContent = name;
+        preview.phone.textContent = phone;
+        preview.course.textContent = course;
+        preview.amount.textContent = amount;
+        preview.method.textContent = method;
+        preview.receivedBy.textContent = receivedBy;
+        preview.signature.textContent = receivedBy;
+        preview.notes.textContent = notes;
+        preview.text.textContent =
+          `Afer Studio recibe de ${name} el pago correspondiente a ${course}.`;
+        preview.footerDate.textContent = `Emitido el ${formattedDate}`;
+      }
+
+      Object.values(fields).forEach((field) => {
+        field.addEventListener("input", updateReceipt);
+        field.addEventListener("change", updateReceipt);
+      });
+
+      printButton.addEventListener("click", () => {
+        updateReceipt();
+        window.print();
+      });
+
+      resetButton.addEventListener("click", () => {
+        fields.number.value = "088-001";
+        fields.date.value = isoToday;
+        fields.name.value = "";
+        fields.phone.value = "";
+        fields.course.value = "Curso de Micropigmentacion Intensivo";
+        fields.amount.value = "Bs. 0";
+        fields.method.value = "Efectivo";
+        fields.receivedBy.value = "";
+        fields.notes.value = "";
+        updateReceipt();
+      });
+
+      updateReceipt();
+    </script>
+  </body>
+</html>
