@@ -126,6 +126,10 @@
         justify-content: flex-end;
       }
 
+      .mobile-action-bar {
+        display: none;
+      }
+
       .btn {
         display: inline-flex;
         align-items: center;
@@ -738,6 +742,10 @@
       }
 
       @media (max-width: 720px) {
+        body {
+          padding-bottom: calc(104px + env(safe-area-inset-bottom, 0px));
+        }
+
         .page {
           width: min(calc(100% - 20px), 1540px);
           margin: 14px auto 28px;
@@ -781,6 +789,35 @@
         .preview-stage {
           padding: 12px 0 4px;
         }
+
+        .topbar .toolbar {
+          display: none;
+        }
+
+        .mobile-action-bar {
+          position: fixed;
+          right: 10px;
+          bottom: 10px;
+          left: 10px;
+          display: block;
+          z-index: 40;
+        }
+
+        .mobile-action-shell {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 10px;
+          padding: 12px;
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          border-radius: 24px;
+          background: rgba(10, 10, 14, 0.84);
+          backdrop-filter: blur(18px);
+          box-shadow: 0 20px 44px rgba(0, 0, 0, 0.28);
+        }
+
+        .mobile-action-shell .btn {
+          min-height: 54px;
+        }
       }
 
       @media (max-width: 560px) {
@@ -796,6 +833,10 @@
         .stage-head {
           flex-direction: column;
           align-items: stretch;
+        }
+
+        .mobile-action-shell {
+          grid-template-columns: 1fr;
         }
       }
 
@@ -817,7 +858,8 @@
         .topbar,
         .controls-panel,
         .stage-head,
-        .print-note {
+        .print-note,
+        .mobile-action-bar {
           display: none !important;
         }
 
@@ -1050,8 +1092,8 @@
         </div>
 
         <div class="toolbar">
-          <button class="btn btn-primary" id="download-pdf" type="button">Descargar PDF</button>
-          <button class="btn btn-secondary" id="reset-form" type="button">Limpiar datos</button>
+          <button class="btn btn-primary" data-action="download-pdf" type="button">Descargar PDF</button>
+          <button class="btn btn-secondary" data-action="reset-form" type="button">Limpiar datos</button>
         </div>
       </header>
 
@@ -1280,11 +1322,18 @@
       </div>
     </div>
 
+    <div class="mobile-action-bar" aria-label="Acciones rápidas del certificado">
+      <div class="mobile-action-shell">
+        <button class="btn btn-primary" data-action="download-pdf" type="button">Descargar PDF</button>
+        <button class="btn btn-secondary" data-action="reset-form" type="button">Limpiar datos</button>
+      </div>
+    </div>
+
     <script>
       const form = document.querySelector("#certificate-form");
       const previewStage = document.querySelector("#preview-stage");
-      const downloadButton = document.querySelector("#download-pdf");
-      const resetButton = document.querySelector("#reset-form");
+      const downloadButtons = document.querySelectorAll('[data-action="download-pdf"]');
+      const resetButtons = document.querySelectorAll('[data-action="reset-form"]');
 
       const fields = {
         recipientName: document.querySelector("#recipient-name"),
@@ -1414,13 +1463,17 @@
         field.addEventListener("change", updatePreview);
       });
 
-      downloadButton.addEventListener("click", () => {
-        updatePreview();
-        updateScale();
-        window.print();
+      downloadButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          updatePreview();
+          updateScale();
+          window.print();
+        });
       });
 
-      resetButton.addEventListener("click", resetForm);
+      resetButtons.forEach((button) => {
+        button.addEventListener("click", resetForm);
+      });
       window.addEventListener("resize", updateScale);
 
       fields.issueDate.value = isoToday;
