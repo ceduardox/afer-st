@@ -312,6 +312,23 @@
         box-shadow: 0 0 18px rgba(241, 176, 150, 0.32);
       }
 
+      .stage-tools {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .mobile-stage-actions {
+        display: none;
+      }
+
+      .zoom-pill {
+        min-width: 76px;
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.12);
+      }
+
       .preview-stage {
         min-height: var(--sheet-height);
         overflow: auto;
@@ -794,6 +811,78 @@
           display: none;
         }
 
+        .stage-panel {
+          position: fixed;
+          inset: 0;
+          z-index: 45;
+          padding: 12px 10px calc(16px + env(safe-area-inset-bottom, 0px));
+          margin: 0;
+          border: 0;
+          border-radius: 0;
+          background: rgba(8, 8, 12, 0.97);
+          box-shadow: none;
+          opacity: 0;
+          visibility: hidden;
+          pointer-events: none;
+          transform: translateY(16px);
+          transition: opacity 180ms ease, transform 180ms ease, visibility 180ms ease;
+        }
+
+        body.mobile-preview-open {
+          overflow: hidden;
+        }
+
+        body.mobile-preview-open .stage-panel {
+          opacity: 1;
+          visibility: visible;
+          pointer-events: auto;
+          transform: none;
+        }
+
+        body.mobile-preview-open .mobile-action-bar {
+          opacity: 0;
+          pointer-events: none;
+        }
+
+        .stage-head {
+          position: sticky;
+          top: 0;
+          z-index: 2;
+          align-items: stretch;
+          gap: 12px;
+          margin: 0;
+          padding: 2px 2px 12px;
+          background: linear-gradient(180deg, rgba(8, 8, 12, 0.98), rgba(8, 8, 12, 0.92) 84%, transparent);
+        }
+
+        .stage-tools {
+          justify-content: space-between;
+        }
+
+        .status-chip {
+          display: none;
+        }
+
+        .mobile-stage-actions {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          width: 100%;
+        }
+
+        .mobile-stage-actions .btn {
+          min-height: 44px;
+          padding-inline: 14px;
+        }
+
+        .preview-stage {
+          min-height: 0;
+          height: calc(100dvh - 170px);
+          padding: 12px 0 4px;
+          touch-action: pan-x pan-y pinch-zoom;
+          overscroll-behavior: contain;
+        }
+
         .mobile-action-bar {
           position: fixed;
           right: 10px;
@@ -805,7 +894,7 @@
 
         .mobile-action-shell {
           display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
+          grid-template-columns: repeat(3, minmax(0, 1fr));
           gap: 10px;
           padding: 12px;
           border: 1px solid rgba(255, 255, 255, 0.12);
@@ -817,6 +906,12 @@
 
         .mobile-action-shell .btn {
           min-height: 54px;
+          padding-inline: 12px;
+        }
+
+        .print-note {
+          margin-top: 12px;
+          text-align: left;
         }
       }
 
@@ -833,6 +928,15 @@
         .stage-head {
           flex-direction: column;
           align-items: stretch;
+        }
+
+        .mobile-stage-actions {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .mobile-stage-actions .zoom-pill {
+          grid-column: 1 / -1;
         }
 
         .mobile-action-shell {
@@ -875,6 +979,15 @@
           background: transparent;
           box-shadow: none;
           border-radius: 0;
+        }
+
+        .stage-panel {
+          position: static !important;
+          inset: auto !important;
+          opacity: 1 !important;
+          visibility: visible !important;
+          pointer-events: auto !important;
+          transform: none !important;
         }
 
         .preview-stage {
@@ -1216,7 +1329,15 @@
               <strong>Vista previa fija A4 horizontal</strong>
               <span>Lista para descargar o imprimir en PDF con diseño profesional.</span>
             </div>
-            <div class="status-chip">Composición de escritorio protegida</div>
+            <div class="stage-tools">
+              <div class="status-chip">Composición de escritorio protegida</div>
+              <div class="mobile-stage-actions">
+                <button class="btn btn-secondary" data-action="zoom-out" type="button">Alejar</button>
+                <button class="btn btn-secondary" data-action="zoom-in" type="button">Acercar</button>
+                <button class="btn zoom-pill" id="mobile-zoom-level" type="button">100%</button>
+                <button class="btn btn-secondary" data-action="close-preview" type="button">Cerrar</button>
+              </div>
+            </div>
           </div>
 
           <div class="preview-stage" id="preview-stage">
@@ -1324,6 +1445,7 @@
 
     <div class="mobile-action-bar" aria-label="Acciones rápidas del certificado">
       <div class="mobile-action-shell">
+        <button class="btn btn-secondary" data-action="open-preview" type="button">Ver certificado</button>
         <button class="btn btn-primary" data-action="download-pdf" type="button">Descargar PDF</button>
         <button class="btn btn-secondary" data-action="reset-form" type="button">Limpiar datos</button>
       </div>
@@ -1331,9 +1453,15 @@
 
     <script>
       const form = document.querySelector("#certificate-form");
+      const body = document.body;
       const previewStage = document.querySelector("#preview-stage");
       const downloadButtons = document.querySelectorAll('[data-action="download-pdf"]');
       const resetButtons = document.querySelectorAll('[data-action="reset-form"]');
+      const openPreviewButtons = document.querySelectorAll('[data-action="open-preview"]');
+      const closePreviewButtons = document.querySelectorAll('[data-action="close-preview"]');
+      const zoomInButtons = document.querySelectorAll('[data-action="zoom-in"]');
+      const zoomOutButtons = document.querySelectorAll('[data-action="zoom-out"]');
+      const zoomLevel = document.querySelector("#mobile-zoom-level");
 
       const fields = {
         recipientName: document.querySelector("#recipient-name"),
@@ -1387,6 +1515,11 @@
 
       const stageWidth = 1123;
       const stageHeight = 794;
+      let mobileZoom = 1;
+
+      function isMobileViewport() {
+        return window.matchMedia("(max-width: 720px)").matches;
+      }
 
       function formatLongDate(value) {
         if (!value) return "Fecha pendiente";
@@ -1406,9 +1539,32 @@
 
       function updateScale() {
         const availableWidth = Math.max(previewStage.clientWidth - 20, 320);
-        const scale = Math.min(1, availableWidth / stageWidth);
+        const baseScale = Math.min(1, availableWidth / stageWidth);
+        const scale = baseScale * (isMobileViewport() ? mobileZoom : 1);
         previewStage.style.setProperty("--sheet-scale", scale.toFixed(4));
         previewStage.style.setProperty("--sheet-height", `${stageHeight * scale}px`);
+
+        if (zoomLevel) {
+          zoomLevel.textContent = `${Math.round(mobileZoom * 100)}%`;
+        }
+      }
+
+      function openMobilePreview() {
+        if (!isMobileViewport()) {
+          return;
+        }
+
+        body.classList.add("mobile-preview-open");
+        updateScale();
+      }
+
+      function closeMobilePreview() {
+        body.classList.remove("mobile-preview-open");
+      }
+
+      function changeMobileZoom(delta) {
+        mobileZoom = Math.min(4, Math.max(1, Number((mobileZoom + delta).toFixed(2))));
+        updateScale();
       }
 
       function updatePreview() {
@@ -1474,7 +1630,37 @@
       resetButtons.forEach((button) => {
         button.addEventListener("click", resetForm);
       });
-      window.addEventListener("resize", updateScale);
+
+      openPreviewButtons.forEach((button) => {
+        button.addEventListener("click", openMobilePreview);
+      });
+
+      closePreviewButtons.forEach((button) => {
+        button.addEventListener("click", closeMobilePreview);
+      });
+
+      zoomInButtons.forEach((button) => {
+        button.addEventListener("click", () => changeMobileZoom(0.25));
+      });
+
+      zoomOutButtons.forEach((button) => {
+        button.addEventListener("click", () => changeMobileZoom(-0.25));
+      });
+
+      window.addEventListener("resize", () => {
+        if (!isMobileViewport()) {
+          closeMobilePreview();
+          mobileZoom = 1;
+        }
+
+        updateScale();
+      });
+
+      window.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          closeMobilePreview();
+        }
+      });
 
       fields.issueDate.value = isoToday;
       resetForm();
