@@ -146,6 +146,12 @@
         transform: translateY(-1px);
       }
 
+      .btn:disabled {
+        cursor: wait;
+        opacity: 0.72;
+        transform: none;
+      }
+
       .btn-primary {
         color: #1f1718;
         background: linear-gradient(135deg, #f9ded0 0%, #efb296 48%, #efd7bd 100%);
@@ -1498,10 +1504,13 @@
       </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
     <script>
       const form = document.querySelector("#certificate-form");
       const body = document.body;
       const previewStage = document.querySelector("#preview-stage");
+      const certificateSheet = document.querySelector("#certificate-sheet");
       const downloadButtons = document.querySelectorAll('[data-action="download-pdf"]');
       const resetButtons = document.querySelectorAll('[data-action="reset-form"]');
       const openPreviewButtons = document.querySelectorAll('[data-action="open-preview"]');
@@ -1617,6 +1626,133 @@
         updateScale();
       }
 
+      function slugifyFileName(value) {
+        const normalized = String(value || "certificado-micropigmentadora")
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "");
+
+        return normalized || "certificado-micropigmentadora";
+      }
+
+      function waitForImages(root) {
+        const images = [...root.querySelectorAll("img")];
+
+        return Promise.all(
+          images.map((image) => {
+            if (image.complete) {
+              return Promise.resolve();
+            }
+
+            return new Promise((resolve) => {
+              image.addEventListener("load", resolve, { once: true });
+              image.addEventListener("error", resolve, { once: true });
+            });
+          })
+        );
+      }
+
+      function setDownloadState(isLoading) {
+        downloadButtons.forEach((button) => {
+          button.disabled = isLoading;
+          button.textContent = isLoading ? "Generando PDF..." : "Descargar PDF";
+        });
+      }
+
+      async function exportCertificatePdf() {
+        const html2canvasLib = window.html2canvas;
+        const jsPdfLib = window.jspdf && window.jspdf.jsPDF;
+
+        if (!html2canvasLib || !jsPdfLib) {
+          window.alert("No se pudo cargar el generador de PDF. Recarga la pagina e intentalo otra vez.");
+          return;
+        }
+
+        updatePreview();
+        setDownloadState(true);
+
+        const previousOpen = body.classList.contains("mobile-preview-open");
+        const previousZoom = mobileZoom;
+
+        body.classList.remove("mobile-preview-open");
+        mobileZoom = 1;
+        updateScale();
+
+        let exportFrame;
+
+        try {
+          if (document.fonts && document.fonts.ready) {
+            await document.fonts.ready;
+          }
+
+          await waitForImages(certificateSheet);
+
+          exportFrame = document.createElement("div");
+          exportFrame.style.position = "fixed";
+          exportFrame.style.top = "0";
+          exportFrame.style.left = "-200vw";
+          exportFrame.style.width = `${stageWidth}px`;
+          exportFrame.style.padding = "0";
+          exportFrame.style.background = "#fbf4ee";
+          exportFrame.style.zIndex = "-1";
+
+          const exportSheet = certificateSheet.cloneNode(true);
+          exportSheet.style.width = `${stageWidth}px`;
+          exportSheet.style.minHeight = `${stageHeight}px`;
+          exportSheet.style.transform = "none";
+          exportSheet.style.borderRadius = "0";
+          exportSheet.style.boxShadow = "none";
+
+          exportFrame.appendChild(exportSheet);
+          document.body.appendChild(exportFrame);
+
+          await waitForImages(exportSheet);
+
+          const canvas = await html2canvasLib(exportSheet, {
+            backgroundColor: "#fbf4ee",
+            scale: 2,
+            useCORS: true,
+            width: stageWidth,
+            height: stageHeight,
+            windowWidth: stageWidth,
+            windowHeight: stageHeight,
+            scrollX: 0,
+            scrollY: 0,
+          });
+
+          const pdf = new jsPdfLib({
+            orientation: "landscape",
+            unit: "mm",
+            format: "a4",
+            compress: true,
+          });
+
+          const imageData = canvas.toDataURL("image/jpeg", 0.98);
+          pdf.addImage(imageData, "JPEG", 0, 0, 297, 210, undefined, "FAST");
+          pdf.save(`${slugifyFileName(fields.recipientName.value)}-certificado.pdf`);
+        } catch (error) {
+          console.error(error);
+          window.alert("No se pudo generar el PDF horizontal. Recarga la pagina e intentalo otra vez.");
+        } finally {
+          if (exportFrame) {
+            exportFrame.remove();
+          }
+
+          mobileZoom = previousZoom;
+
+          if (previousOpen) {
+            body.classList.add("mobile-preview-open");
+          } else {
+            body.classList.remove("mobile-preview-open");
+          }
+
+          updateScale();
+          setDownloadState(false);
+        }
+      }
+
       function updatePreview() {
         const recipientName = fields.recipientName.value.trim() || "Nombre de la alumna";
         const recipientDocument = fields.recipientDocument.value.trim() || "CI o documento";
@@ -1670,11 +1806,7 @@
       });
 
       downloadButtons.forEach((button) => {
-        button.addEventListener("click", () => {
-          updatePreview();
-          updateScale();
-          window.print();
-        });
+        button.addEventListener("click", exportCertificatePdf);
       });
 
       resetButtons.forEach((button) => {
