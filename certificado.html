@@ -1695,12 +1695,15 @@
           exportFrame.style.left = "-200vw";
           exportFrame.style.width = `${stageWidth}px`;
           exportFrame.style.padding = "0";
+          exportFrame.style.overflow = "visible";
           exportFrame.style.background = "#fbf4ee";
           exportFrame.style.zIndex = "-1";
 
           const exportSheet = certificateSheet.cloneNode(true);
           exportSheet.style.width = `${stageWidth}px`;
           exportSheet.style.minHeight = `${stageHeight}px`;
+          exportSheet.style.height = "auto";
+          exportSheet.style.overflow = "visible";
           exportSheet.style.transform = "none";
           exportSheet.style.borderRadius = "0";
           exportSheet.style.boxShadow = "none";
@@ -1710,14 +1713,19 @@
 
           await waitForImages(exportSheet);
 
+          await new Promise((resolve) => requestAnimationFrame(() => resolve()));
+
+          const exportWidth = Math.ceil(exportSheet.getBoundingClientRect().width);
+          const exportHeight = Math.ceil(Math.max(exportSheet.scrollHeight, exportSheet.offsetHeight, stageHeight));
+
           const canvas = await html2canvasLib(exportSheet, {
             backgroundColor: "#fbf4ee",
             scale: 2,
             useCORS: true,
-            width: stageWidth,
-            height: stageHeight,
-            windowWidth: stageWidth,
-            windowHeight: stageHeight,
+            width: exportWidth,
+            height: exportHeight,
+            windowWidth: exportWidth,
+            windowHeight: exportHeight,
             scrollX: 0,
             scrollY: 0,
           });
@@ -1729,8 +1737,17 @@
             compress: true,
           });
 
-          const imageData = canvas.toDataURL("image/jpeg", 0.98);
-          pdf.addImage(imageData, "JPEG", 0, 0, 297, 210, undefined, "FAST");
+          const imageData = canvas.toDataURL("image/png");
+          const pageWidth = pdf.internal.pageSize.getWidth();
+          const pageHeight = pdf.internal.pageSize.getHeight();
+          const imageProps = pdf.getImageProperties(imageData);
+          const fitRatio = Math.min(pageWidth / imageProps.width, pageHeight / imageProps.height);
+          const renderWidth = imageProps.width * fitRatio;
+          const renderHeight = imageProps.height * fitRatio;
+          const offsetX = (pageWidth - renderWidth) / 2;
+          const offsetY = (pageHeight - renderHeight) / 2;
+
+          pdf.addImage(imageData, "PNG", offsetX, offsetY, renderWidth, renderHeight, undefined, "FAST");
           pdf.save(`${slugifyFileName(fields.recipientName.value)}-certificado.pdf`);
         } catch (error) {
           console.error(error);
