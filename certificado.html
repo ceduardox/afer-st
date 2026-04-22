@@ -812,47 +812,25 @@
         }
 
         .stage-panel {
-          position: fixed;
-          inset: 0;
-          z-index: 45;
-          padding: 12px 10px calc(16px + env(safe-area-inset-bottom, 0px));
-          margin: 0;
-          border: 0;
-          border-radius: 0;
-          background: rgba(8, 8, 12, 0.97);
-          box-shadow: none;
-          opacity: 0;
-          visibility: hidden;
-          pointer-events: none;
-          transform: translateY(16px);
-          transition: opacity 180ms ease, transform 180ms ease, visibility 180ms ease;
-        }
-
-        body.mobile-preview-open {
-          overflow: hidden;
-        }
-
-        body.mobile-preview-open .stage-panel {
+          position: relative;
+          z-index: auto;
+          padding: 18px;
+          margin-top: 6px;
           opacity: 1;
           visibility: visible;
           pointer-events: auto;
           transform: none;
-        }
-
-        body.mobile-preview-open .mobile-action-bar {
-          opacity: 0;
-          pointer-events: none;
+          transition: none;
         }
 
         .stage-head {
-          position: sticky;
-          top: 0;
-          z-index: 2;
-          align-items: stretch;
+          position: static;
+          z-index: auto;
+          align-items: center;
           gap: 12px;
-          margin: 0;
-          padding: 2px 2px 12px;
-          background: linear-gradient(180deg, rgba(8, 8, 12, 0.98), rgba(8, 8, 12, 0.92) 84%, transparent);
+          margin-bottom: 12px;
+          padding: 0;
+          background: transparent;
         }
 
         .stage-tools {
@@ -860,25 +838,13 @@
         }
 
         .status-chip {
-          display: none;
-        }
-
-        .mobile-stage-actions {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 8px;
-          width: 100%;
-        }
-
-        .mobile-stage-actions .btn {
-          min-height: 44px;
-          padding-inline: 14px;
+          display: inline-flex;
         }
 
         .preview-stage {
           min-height: 0;
-          height: calc(100dvh - 170px);
-          padding: 12px 0 4px;
+          max-height: 270px;
+          padding: 10px 0 2px;
           touch-action: pan-x pan-y pinch-zoom;
           overscroll-behavior: contain;
         }
@@ -912,6 +878,59 @@
         .print-note {
           margin-top: 12px;
           text-align: left;
+        }
+
+        body.mobile-preview-open {
+          overflow: hidden;
+        }
+
+        body.mobile-preview-open .stage-panel {
+          position: fixed;
+          inset: 0;
+          z-index: 45;
+          padding: 12px 10px calc(16px + env(safe-area-inset-bottom, 0px));
+          margin: 0;
+          border: 0;
+          border-radius: 0;
+          background: rgba(8, 8, 12, 0.97);
+          box-shadow: none;
+        }
+
+        body.mobile-preview-open .mobile-action-bar {
+          opacity: 0;
+          pointer-events: none;
+        }
+
+        body.mobile-preview-open .stage-head {
+          position: sticky;
+          top: 0;
+          z-index: 2;
+          align-items: stretch;
+          margin: 0;
+          padding: 2px 2px 12px;
+          background: linear-gradient(180deg, rgba(8, 8, 12, 0.98), rgba(8, 8, 12, 0.92) 84%, transparent);
+        }
+
+        body.mobile-preview-open .status-chip {
+          display: none;
+        }
+
+        body.mobile-preview-open .mobile-stage-actions {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          width: 100%;
+        }
+
+        body.mobile-preview-open .mobile-stage-actions .btn {
+          min-height: 44px;
+          padding-inline: 14px;
+        }
+
+        body.mobile-preview-open .preview-stage {
+          height: calc(100dvh - 170px);
+          max-height: none;
+          padding: 12px 0 4px;
         }
       }
 
@@ -1554,12 +1573,15 @@
           return;
         }
 
+        mobileZoom = Math.max(mobileZoom, 1.75);
         body.classList.add("mobile-preview-open");
         updateScale();
       }
 
       function closeMobilePreview() {
         body.classList.remove("mobile-preview-open");
+        mobileZoom = 1;
+        updateScale();
       }
 
       function changeMobileZoom(delta) {
