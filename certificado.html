@@ -54,6 +54,7 @@
           radial-gradient(circle at top left, rgba(241, 176, 150, 0.17), transparent 26%),
           radial-gradient(circle at 92% 14%, rgba(210, 163, 119, 0.13), transparent 22%),
           linear-gradient(180deg, #0b0912 0%, #06060a 100%);
+        overflow-x: hidden;
       }
 
       img {
@@ -74,6 +75,9 @@
       }
 
       .topbar {
+        position: sticky;
+        top: 14px;
+        z-index: 30;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -307,6 +311,7 @@
       .preview-stage {
         min-height: var(--sheet-height);
         overflow: auto;
+        -webkit-overflow-scrolling: touch;
         border-radius: 26px;
         background:
           radial-gradient(circle at top, rgba(241, 176, 150, 0.09), transparent 24%),
@@ -739,20 +744,58 @@
         }
 
         .topbar {
+          top: 10px;
+          flex-direction: column;
+          align-items: stretch;
+          gap: 12px;
           padding: 14px;
           border-radius: 28px;
         }
 
-        .toolbar {
+        .brand {
           width: 100%;
         }
 
+        .toolbar {
+          width: 100%;
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
         .toolbar .btn {
-          flex: 1 1 180px;
+          width: 100%;
+          min-height: 52px;
+          padding-inline: 14px;
         }
 
         .field-split {
           grid-template-columns: 1fr;
+        }
+
+        input,
+        textarea,
+        select {
+          font-size: 16px;
+        }
+
+        .preview-stage {
+          padding: 12px 0 4px;
+        }
+      }
+
+      @media (max-width: 560px) {
+        .panel {
+          padding: 18px;
+          border-radius: 26px;
+        }
+
+        .toolbar {
+          grid-template-columns: 1fr;
+        }
+
+        .stage-head {
+          flex-direction: column;
+          align-items: stretch;
         }
       }
 
@@ -1155,7 +1198,7 @@
                   <div class="side-footer">
                     <strong>Micropigmentación con precisión, estética y técnica.</strong>
                     <span>
-                      Un formato pensado para verse elegante en pantalla, en impresión y en PDF.
+                      Una certificación diseñada para reflejar técnica, estética y precisión profesional en micropigmentación.
                     </span>
                   </div>
                 </div>
