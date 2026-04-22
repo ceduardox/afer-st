@@ -764,12 +764,14 @@
         }
 
         .page {
-          width: min(calc(100% - 20px), 1540px);
+          width: 100%;
           margin: 14px auto 28px;
+          padding-inline: 10px;
         }
 
         .topbar {
           top: 10px;
+          width: 100%;
           flex-direction: column;
           align-items: stretch;
           gap: 12px;
@@ -779,6 +781,24 @@
 
         .brand {
           width: 100%;
+        }
+
+        .layout,
+        .controls-panel,
+        .stage-panel,
+        .form-grid,
+        .field,
+        .field-split {
+          width: 100%;
+          min-width: 0;
+        }
+
+        .layout {
+          gap: 18px;
+        }
+
+        .controls-panel {
+          padding-inline: 14px;
         }
 
         .toolbar {
@@ -800,7 +820,15 @@
         input,
         textarea,
         select {
+          width: 100%;
+          min-width: 0;
+          max-width: 100%;
           font-size: 16px;
+        }
+
+        textarea {
+          overflow-wrap: anywhere;
+          word-break: break-word;
         }
 
         .preview-stage {
