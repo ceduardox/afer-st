@@ -5,6 +5,7 @@
 ## Sitio principal
 
 - [Inicio](https://afer.studio/) - pagina principal con servicios, resultados antes y despues, mapa, informacion local y contenido sobre micropigmentacion labial y lashes.
+- [Micropigmentacion labial](https://afer.studio/micropigmentacion.html) - landing con que es la micropigmentacion, proceso paso a paso, correccion de labio oscuro, preguntas frecuentes y agenda por WhatsApp.
 
 ## Temas clave
 

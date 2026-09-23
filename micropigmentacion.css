@@ -1,0 +1,851 @@
+/* ============================================================
+   Landing: Micropigmentacion labial - Afer Studio (tema claro)
+   ============================================================ */
+
+.micro-page {
+  --bg: #ffffff;
+  --bg-soft: #fdf8f6;
+  --panel: #ffffff;
+  --panel-strong: #ffffff;
+  --border: rgba(36, 26, 38, 0.1);
+  --text: #241a26;
+  --muted: #6d6270;
+  --rose: #e07a55;
+  --rose-strong: #cf5f3a;
+  --ice: #3f9cc9;
+  --ice-strong: #2d86b3;
+  --shadow: 0 18px 44px rgba(120, 86, 96, 0.12);
+  color: var(--text);
+  background:
+    radial-gradient(circle at 50% -12%, rgba(224, 122, 85, 0.1), transparent 30%),
+    radial-gradient(circle at 86% 4%, rgba(63, 156, 201, 0.1), transparent 26%),
+    linear-gradient(180deg, #fffdfc 0%, #fdf6f3 100%);
+  padding-bottom: 118px;
+}
+
+.micro-page .section-heading h2 {
+  font-size: clamp(2.2rem, 4.2vw, 3.8rem);
+}
+
+.micro-page .section-heading p {
+  max-width: 640px;
+}
+
+/* Decorativo suave para fondo claro */
+.micro-page .site-glow {
+  opacity: 0.55;
+}
+
+.micro-page .site-glow-a {
+  background: radial-gradient(circle, rgba(63, 156, 201, 0.2), transparent 70%);
+}
+
+.micro-page .site-glow-b {
+  background: radial-gradient(circle, rgba(224, 122, 85, 0.18), transparent 70%);
+}
+
+.micro-page .site-grid {
+  background-image:
+    linear-gradient(rgba(36, 26, 38, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(36, 26, 38, 0.035) 1px, transparent 1px);
+}
+
+/* Componentes base reutilizados, adaptados a claro */
+.micro-page .eyebrow-pill,
+.micro-page .section-kicker,
+.micro-page .result-tag {
+  color: var(--rose-strong);
+  background: linear-gradient(135deg, rgba(224, 122, 85, 0.12), rgba(63, 156, 201, 0.1));
+  border-color: rgba(224, 122, 85, 0.22);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 8px 18px rgba(120, 86, 96, 0.06);
+}
+
+.micro-page .hero-proof span {
+  color: var(--text);
+  background: #ffffff;
+  border-color: rgba(36, 26, 38, 0.1);
+  box-shadow: 0 8px 20px rgba(120, 86, 96, 0.08);
+}
+
+.micro-page .hero-text,
+.micro-page .section-heading p {
+  color: var(--muted);
+}
+
+.micro-page .btn-primary {
+  color: #1a1118;
+  box-shadow: 0 14px 32px rgba(224, 122, 85, 0.28);
+}
+
+.micro-page .btn-secondary {
+  color: var(--text);
+  background: #ffffff;
+  border-color: rgba(36, 26, 38, 0.14);
+  box-shadow: 0 8px 20px rgba(120, 86, 96, 0.06);
+}
+
+.micro-page .tilt-card {
+  border-color: rgba(36, 26, 38, 0.08);
+  background: #ffffff;
+  box-shadow: var(--shadow);
+}
+
+.micro-page .tilt-card::after {
+  background: radial-gradient(circle at var(--tilt-x, 50%) var(--tilt-y, 50%), rgba(224, 122, 85, 0.1), transparent 36%);
+}
+
+.micro-page .compare-frame {
+  background: #f2ecec;
+}
+
+.micro-page .compare-badges span {
+  color: #ffffff;
+  background: rgba(20, 12, 18, 0.52);
+}
+
+.micro-page .results-rail::-webkit-scrollbar-thumb {
+  background: rgba(36, 26, 38, 0.14);
+}
+
+.micro-page .site-footer {
+  color: var(--muted);
+}
+
+.micro-page .site-footer a {
+  background: #ffffff;
+  border-color: rgba(36, 26, 38, 0.14);
+}
+
+/* Marca dentro del hero (sin header) */
+.micro-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.micro-brand img {
+  width: 52px;
+  height: 52px;
+  border-radius: 15px;
+  box-shadow: 0 12px 28px rgba(224, 122, 85, 0.26);
+}
+
+.micro-brand span {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--text);
+}
+
+/* HERO */
+.micro-page .micro-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(340px, 0.86fr);
+  align-items: center;
+  gap: 44px;
+  min-height: auto;
+  padding-top: 72px;
+}
+
+.micro-page .micro-hero-copy h1 {
+  margin: 18px 0 16px;
+  font-size: clamp(3rem, 5.4vw, 5.4rem);
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+  color: var(--text);
+}
+
+.micro-page .micro-hero-copy h1 span {
+  display: block;
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 1.07em;
+  font-weight: 600;
+  color: var(--rose-strong);
+}
+
+.micro-page .micro-hero-media {
+  position: relative;
+}
+
+.micro-page .micro-hero-compare {
+  padding: 14px;
+}
+
+.micro-page .compare-frame-micro {
+  aspect-ratio: 4 / 5;
+}
+
+.micro-page .micro-drag-hint {
+  margin: 12px 4px 2px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.micro-page .micro-hero-badge {
+  position: absolute;
+  left: -14px;
+  bottom: 74px;
+  display: grid;
+  gap: 4px;
+  max-width: 190px;
+  padding: 16px 18px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(36, 26, 38, 0.08);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(14px);
+}
+
+.micro-page .micro-hero-badge strong {
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--rose-strong);
+}
+
+.micro-page .micro-hero-badge span {
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+/* DATOS RAPIDOS */
+.micro-page .micro-facts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  width: min(calc(100% - (var(--shell-space) * 2)), var(--max-width));
+  margin: 30px auto 0;
+  border-top: 1px solid rgba(36, 26, 38, 0.12);
+  border-bottom: 1px solid rgba(36, 26, 38, 0.12);
+}
+
+.micro-page .micro-fact {
+  padding: 30px clamp(16px, 2.2vw, 30px);
+  border-left: 1px solid rgba(36, 26, 38, 0.12);
+  background: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.micro-page .micro-fact:first-child {
+  border-left: 0;
+}
+
+.micro-page .micro-fact-num {
+  display: block;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 2.7rem;
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  color: var(--rose-strong);
+  background: none;
+}
+
+.micro-page .micro-fact strong {
+  display: block;
+  margin: 14px 0 7px;
+  font-size: 1.08rem;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.micro-page .micro-fact p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+  font-size: 0.94rem;
+}
+
+/* QUE ES */
+.micro-page .micro-about {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 40px;
+}
+
+.micro-page .micro-about-media {
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  min-height: 460px;
+}
+
+.micro-page .micro-about-media img {
+  width: 100%;
+  height: 100%;
+  min-height: 460px;
+  object-fit: cover;
+}
+
+.micro-page .micro-about-copy h2 {
+  margin: 16px 0 14px;
+  font-size: clamp(2.1rem, 3.6vw, 3.2rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  color: var(--text);
+}
+
+.micro-page .micro-about-copy > p {
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.72;
+}
+
+.micro-page .micro-about-copy strong {
+  color: var(--text);
+}
+
+.micro-page .micro-check-list {
+  margin: 22px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 12px;
+}
+
+.micro-page .micro-check-list li {
+  position: relative;
+  padding-left: 26px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.micro-page .micro-check-list li::before {
+  content: "";
+  position: absolute;
+  top: 9px;
+  left: 0;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--rose), var(--ice));
+  box-shadow: 0 0 16px rgba(224, 122, 85, 0.35);
+}
+
+.micro-page .micro-inline-cta {
+  margin-top: 26px;
+}
+
+/* BENEFICIOS */
+.micro-page .micro-benefit-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.micro-page .micro-benefit-card {
+  overflow: hidden;
+}
+
+.micro-page .micro-benefit-card img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+
+.micro-page .micro-benefit-body {
+  padding: 20px;
+}
+
+.micro-page .micro-benefit-body strong {
+  display: block;
+  font-size: 1.2rem;
+  line-height: 1.2;
+  color: var(--text);
+}
+
+.micro-page .micro-benefit-body p {
+  margin: 10px 0 0;
+  color: var(--muted);
+  line-height: 1.6;
+  font-size: 0.98rem;
+}
+
+/* PROCESO */
+.micro-page .micro-step-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.micro-page .micro-step {
+  overflow: hidden;
+}
+
+.micro-page .micro-step-media {
+  position: relative;
+}
+
+.micro-page .micro-step-media img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.micro-page .micro-step-num {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: rgba(20, 12, 18, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(16px);
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.micro-page .micro-step-body {
+  padding: 22px;
+}
+
+.micro-page .micro-step-body strong {
+  display: block;
+  font-size: 1.3rem;
+  color: var(--text);
+}
+
+.micro-page .micro-step-body p {
+  margin: 12px 0 0;
+  color: var(--muted);
+  line-height: 1.68;
+}
+
+/* LABIO OSCURO */
+.micro-page .micro-darklip-card {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  align-items: stretch;
+  overflow: hidden;
+}
+
+.micro-page .micro-darklip-media img {
+  width: 100%;
+  height: 100%;
+  min-height: 420px;
+  object-fit: cover;
+}
+
+.micro-page .micro-darklip-copy {
+  padding: clamp(24px, 3vw, 46px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.micro-page .micro-darklip-copy h2 {
+  margin: 14px 0;
+  font-size: clamp(1.9rem, 3.2vw, 2.9rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--text);
+}
+
+.micro-page .micro-darklip-copy > p {
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.72;
+}
+
+.micro-page .micro-darklip-copy .micro-check-list {
+  margin-top: 18px;
+}
+
+/* UBICACION */
+.micro-page .micro-visit-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  align-items: stretch;
+  overflow: hidden;
+}
+
+.micro-page .micro-visit-media img {
+  width: 100%;
+  height: 100%;
+  min-height: 380px;
+  object-fit: cover;
+}
+
+.micro-page .micro-visit-copy {
+  padding: clamp(24px, 3vw, 46px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.micro-page .micro-visit-copy h2 {
+  margin: 14px 0;
+  font-size: clamp(1.9rem, 3.2vw, 2.9rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--text);
+}
+
+.micro-page .micro-visit-copy > p {
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.72;
+}
+
+/* TESTIMONIOS */
+.micro-page .micro-testimonial-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.micro-page .micro-testimonial {
+  padding: 26px;
+}
+
+.micro-page .micro-testimonial p {
+  margin: 0 0 20px;
+  font-size: 1.08rem;
+  line-height: 1.65;
+  color: var(--text);
+}
+
+.micro-page .micro-testimonial strong {
+  display: block;
+  font-size: 1.02rem;
+  color: var(--text);
+}
+
+.micro-page .micro-testimonial span {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.micro-page .micro-testimonial::before {
+  content: "\201C";
+  display: block;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 3.4rem;
+  line-height: 0.6;
+  color: rgba(224, 122, 85, 0.55);
+  margin-bottom: 6px;
+}
+
+/* FAQ */
+.micro-page .micro-faq-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.micro-page .micro-faq {
+  padding: 24px;
+}
+
+.micro-page .micro-faq span {
+  display: inline-flex;
+  font-size: 1.14rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.micro-page .micro-faq p {
+  margin: 12px 0 0;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+/* CIERRE */
+.micro-page .micro-final-card {
+  padding: clamp(30px, 5vw, 64px);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(224, 122, 85, 0.12), transparent 44%),
+    radial-gradient(circle at 84% 26%, rgba(63, 156, 201, 0.12), transparent 42%),
+    #ffffff;
+}
+
+.micro-page .micro-final-card h2 {
+  margin: 16px 0 14px;
+  font-size: clamp(2.2rem, 4.4vw, 3.8rem);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  color: var(--text);
+}
+
+.micro-page .micro-final-card > p {
+  max-width: 600px;
+  color: var(--muted);
+  font-size: 1.06rem;
+  line-height: 1.7;
+}
+
+.micro-page .micro-final-actions {
+  justify-content: center;
+}
+
+/* BOTON FIJO DE WHATSAPP */
+.micro-wa {
+  position: fixed;
+  left: 50%;
+  bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  z-index: 40;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 26px 15px 22px;
+  border-radius: 999px;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 1.02rem;
+  background: #25d366;
+  box-shadow: 0 16px 36px rgba(37, 211, 102, 0.42);
+  transition: transform 180ms ease, background 180ms ease, box-shadow 180ms ease;
+}
+
+.micro-wa svg {
+  width: 26px;
+  height: 26px;
+  fill: currentColor;
+}
+
+.micro-wa::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  animation: micro-pulse 2.4s ease-out infinite;
+}
+
+.micro-wa:hover,
+.micro-wa:focus-visible {
+  transform: translateX(-50%) translateY(-3px);
+  background: #1ebe5b;
+  box-shadow: 0 20px 42px rgba(37, 211, 102, 0.5);
+}
+
+@keyframes micro-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5);
+  }
+
+  70% {
+    box-shadow: 0 0 0 16px rgba(37, 211, 102, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+  }
+}
+
+/* PRECIO */
+.micro-page .micro-price-card {
+  max-width: 640px;
+  margin-inline: auto;
+  padding: clamp(30px, 5vw, 54px);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(224, 122, 85, 0.12), transparent 55%),
+    #ffffff;
+}
+
+.micro-page .micro-price-card h2 {
+  margin: 14px 0 10px;
+  font-size: clamp(2rem, 3.8vw, 3rem);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  color: var(--text);
+}
+
+.micro-page .micro-price-amount {
+  display: grid;
+  gap: 6px;
+  margin: 24px 0 8px;
+  padding: 22px 40px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, #f7d4c1 0%, #f3a487 48%, #88dfff 100%);
+}
+
+.micro-page .micro-price-amount strong {
+  font-size: clamp(3rem, 7vw, 4.4rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: #1a1118;
+}
+
+.micro-page .micro-price-amount strong span {
+  font-size: 0.45em;
+  font-weight: 700;
+}
+
+.micro-page .micro-price-amount em {
+  font-style: normal;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: #1a1118;
+}
+
+.micro-page .micro-price-list {
+  margin-top: 22px;
+  text-align: left;
+  width: min(100%, 420px);
+}
+
+/* RESPONSIVE */
+@media (max-width: 1120px) {
+  .micro-page .micro-hero,
+  .micro-page .micro-about,
+  .micro-page .micro-darklip-card,
+  .micro-page .micro-visit-card {
+    grid-template-columns: 1fr;
+  }
+
+  .micro-page .micro-hero-media {
+    order: -1;
+  }
+
+  .micro-page .micro-facts,
+  .micro-page .micro-benefit-grid,
+  .micro-page .micro-step-list,
+  .micro-page .micro-testimonial-grid,
+  .micro-page .micro-faq-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .micro-page .micro-fact {
+    border-top: 1px solid rgba(36, 26, 38, 0.12);
+  }
+
+  .micro-page .micro-fact:nth-child(-n + 2) {
+    border-top: 0;
+  }
+
+  .micro-page .micro-fact:nth-child(odd) {
+    border-left: 0;
+  }
+
+  .micro-page .micro-darklip-media img {
+    min-height: 340px;
+  }
+
+  .micro-page .micro-visit-media img {
+    min-height: 300px;
+  }
+}
+
+@media (max-width: 760px) {
+  .micro-page {
+    padding-bottom: 98px;
+  }
+
+  .micro-page .micro-hero {
+    padding-top: 46px;
+  }
+
+  .micro-page .micro-hero-copy h1 {
+    font-size: clamp(2.5rem, 11vw, 3.6rem);
+  }
+
+  .micro-page .hero-proof {
+    gap: 8px 14px;
+    margin-top: 18px;
+  }
+
+  .micro-page .hero-proof span {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    color: var(--muted);
+    font-size: 0.82rem;
+  }
+
+  .micro-page .hero-proof span + span::before {
+    content: "";
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--rose);
+  }
+
+  .micro-page .hero-actions {
+    gap: 10px;
+    margin-top: 24px;
+  }
+
+  .micro-page .hero-actions .btn {
+    width: 100%;
+  }
+
+  .micro-page .hero-actions .btn-secondary {
+    min-height: 0;
+    padding: 10px 0 2px;
+    border: 0;
+    background: none;
+    box-shadow: none;
+    color: var(--rose-strong);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .micro-page .micro-hero-badge {
+    left: 10px;
+    bottom: 66px;
+    max-width: 160px;
+    padding: 13px 15px;
+  }
+
+  .micro-page .micro-hero-badge strong {
+    font-size: 1.25rem;
+  }
+
+  .micro-page .compare-frame-micro {
+    aspect-ratio: 5 / 6;
+  }
+
+  .micro-page .micro-facts,
+  .micro-page .micro-benefit-grid,
+  .micro-page .micro-step-list,
+  .micro-page .micro-testimonial-grid,
+  .micro-page .micro-faq-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .micro-page .micro-fact:nth-child(n) {
+    border-top: 1px solid rgba(36, 26, 38, 0.12);
+    border-left: 0;
+  }
+
+  .micro-page .micro-fact:first-child {
+    border-top: 0;
+  }
+
+  .micro-page .micro-about-media,
+  .micro-page .micro-about-media img {
+    min-height: 320px;
+  }
+
+  .micro-wa {
+    width: calc(100% - 32px);
+    justify-content: center;
+    padding: 15px 20px;
+  }
+}
